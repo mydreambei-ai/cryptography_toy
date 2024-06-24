@@ -1,5 +1,18 @@
 from common import miller_rabin_prime_test, int_to_bytes, bytes_to_int, extended_gcd
 
+"""
+a^p == a mod p
+
+a^phi(p*q) == a mod (p*q)
+
+phi(p*q) == (p -1)*(q-1)
+e*d == 1 mod phi(p*q)
+
+ed-1 = k*(phi(p*q))
+
+a**(ed) = a**(1 + k*(phi(p*q))) = a * a**(phi(p*q))*k = a* 1
+
+"""
 def generate_prime(n)->int:
     p = None
     while 1:

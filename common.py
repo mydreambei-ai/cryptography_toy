@@ -64,3 +64,12 @@ def miller_rabin_prime_test(n, k=5):
             return False
 
     return True
+
+def generate_prime(n)->int:
+    p = None
+    while 1:
+        if miller_rabin_prime_test(n):
+            p = n
+            break
+        n -= 1
+    return p

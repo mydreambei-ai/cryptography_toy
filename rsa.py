@@ -13,6 +13,7 @@ ed-1 = k*(phi(p*q))
 a**(ed) = a**(1 + k*(phi(p*q))) = a * a**(phi(p*q))*k = a* 1
 
 note: m must be {n} space
+
 """
 def generate_prime(n)->int:
     p = None

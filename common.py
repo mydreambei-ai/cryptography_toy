@@ -12,6 +12,14 @@ def int_to_bytes(n: int)->bytes:
 def bytes_to_int(s: bytes)->int:
     return int.from_bytes(s, "little")
 
+def extended_gcd(a, b):
+    if a == 0:
+        return b, 0, 1
+    gcd, x1, y1 = extended_gcd(b % a, a)
+    x = y1 - (b // a) * x1
+    y = x1
+    return gcd, x, y
+
 def find_primitive_root(n):
     if n == 1:
         return 1

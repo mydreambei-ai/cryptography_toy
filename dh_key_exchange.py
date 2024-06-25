@@ -3,6 +3,10 @@ from common import generate_prime, find_primitive_root
 import random
 from elliptic_curve import EllipticCurve
 
+"""
+a b two party
+"""
+
 def native_dh_exchange(p, g):
     a = random.randint(2, p-1)
 

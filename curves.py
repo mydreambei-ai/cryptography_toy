@@ -9,3 +9,16 @@ b = 1314834172054291958757092074419044647942534449144043611621331643553417295939
 Ed25519 = EllipticCurve(a, b, p=p, order=order)
 
 Ed25519_G = Ed25519(19210687000535497554771480197334579066178916638360430415404683479331899109173, 18895136298852160426215908827706757709362468741134365248309716069351496097044)
+
+
+def point_compress(point):
+    x, y = point.x, point.y
+    if y > (p>>1):
+        return ((x << 1) ^ 1).to_bytes(32, 'little')
+    return (x << 1).to_bytes(32, 'little')
+
+def point_decompress(m:bytes):
+    x = int.from_bytes(m, 'little')
+    if x & 1:
+        return Ed25519.y_recover((x^1)>>1, flag=True)
+    return Ed25519.y_recover(x>>1, flag=False)

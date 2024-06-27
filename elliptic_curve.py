@@ -2,6 +2,7 @@ from fractions import Fraction
 from galois import GF, GFItem
 from common import cipolla
 
+
 class Point:
     def __init__(self, x, y, z=1):
         self.x = x
@@ -129,12 +130,15 @@ class EllipticCurve:
         return Fraction((p2.y - p1.y), (p2.x -p1.x))
 
 
-    def y_recover(self, x):
-        x = x%self.p
+    def y_recover(self, x, flag=False):
+        x = x % self.p
         y2 = (x**3  + self.a * x + self.b) % self.p
         y = cipolla(y2, self.p)
         if y:
-            return Point(x, y)
+            if flag:
+                return Point(x, max(y, self.p-y))
+            else:
+                return Point(x, min(y, self.p-y))
         return None
 
     def __contains__(self, p: Point):

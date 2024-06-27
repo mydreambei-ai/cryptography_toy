@@ -4,6 +4,49 @@ from sympy import isprime, primefactors
 
 import random
 
+def legendre_symbol(a, p):
+    a = a % p
+    symbol = pow(a, (p - 1) // 2, p)
+    if symbol == p-1:
+        return -1
+    return symbol
+
+
+def cipolla(a, p):
+    if legendre_symbol(a, p) != 1:
+        return None
+
+    if a == 0:
+        return 0
+
+    class ComplexMod:
+        def __init__(self, re, im, mod):
+            self.re = re % mod
+            self.im = im % mod
+            self.mod = mod
+
+        def __mul__(self, other):
+            re = (self.re * other.re + self.im * other.im * w) % self.mod
+            im = (self.re * other.im + self.im * other.re) % self.mod
+            return ComplexMod(re, im, self.mod)
+
+    b = 0
+    while legendre_symbol(b * b - a, p) != -1:
+        b += 1
+    w = b * b - a
+
+    x = ComplexMod(b, 1, p)
+    res = ComplexMod(1, 0, p)
+    n = (p + 1) // 2
+
+    while n:
+        if n % 2:
+            res = res * x
+        x = x * x
+        n //= 2
+    return res.re
+
+
 def int_to_bytes(n: int)->bytes:
     import math
 

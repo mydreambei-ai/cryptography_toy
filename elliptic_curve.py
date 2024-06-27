@@ -1,5 +1,6 @@
 from fractions import Fraction
 from galois import GF, GFItem
+from common import cipolla
 
 class Point:
     def __init__(self, x, y, z=1):
@@ -20,6 +21,7 @@ class EllipticCurve:
         self.a = a
         self.b = b
         self.order = order
+        self.p = p
         if p:
             self.gf = GF(p)
         else:
@@ -88,6 +90,7 @@ class EllipticCurve:
                 n = n // 2
         return b
 
+
     def add_point(self, p1: Point, p2: Point):
         if p1 == InfinityPoint:
             return p2
@@ -113,6 +116,11 @@ class EllipticCurve:
         else:
             return Point(Fraction(x3), Fraction(y3))
 
+    def neg_point(self, p1:Point):
+        return Point(p1.x, self.p-p1.y)
+
+    def sub_point(self, p1:Point, p2:Point):
+        return self.add_point(p1, self.neg_point(p2))
 
     def scope(self, p1: Point, p2: Point):
         if p1.x == p2.x:
@@ -120,6 +128,14 @@ class EllipticCurve:
 
         return Fraction((p2.y - p1.y), (p2.x -p1.x))
 
+
+    def y_recover(self, x):
+        x = x%self.p
+        y2 = (x**3  + self.a * x + self.b) % self.p
+        y = cipolla(y2, self.p)
+        if y:
+            return Point(x, y)
+        return None
 
     def __contains__(self, p: Point):
         if p.z == 0:

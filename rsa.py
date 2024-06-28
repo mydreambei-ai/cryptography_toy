@@ -36,7 +36,7 @@ def generate_keys(n):
     d = extended_gcd(e, phi)[1]
     if d < 0:
         d = phi + d
-    print(f"n:", n.bit_length())
+    print(f"n:", n, n.bit_length())
 
     return (e, n), (d, n)
 

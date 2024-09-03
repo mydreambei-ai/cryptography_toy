@@ -153,3 +153,20 @@ def convolution_via_matrix(a, b):
     result = np.dot(conv_matrix, a)
 
     return result
+
+
+def fast_circular_convolution(a, b):
+    # 假设a和b长度相同，且为n
+
+    # 计算FFT
+    A = np.fft.fft(a)
+    B = np.fft.fft(b)
+
+    # 频域逐元素相乘
+    C = A * B
+
+    # 逆FFT转换回时域
+    result = np.fft.ifft(C)
+
+    # 返回结果取实数部分
+    return np.real(result)

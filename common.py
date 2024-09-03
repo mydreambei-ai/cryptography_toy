@@ -1,13 +1,14 @@
-
+import numpy as np
 from math import gcd
 from sympy import isprime, primefactors
 
 import random
 
+
 def legendre_symbol(a, p):
     a = a % p
     symbol = pow(a, (p - 1) // 2, p)
-    if symbol == p-1:
+    if symbol == p - 1:
         return -1
     return symbol
 
@@ -47,13 +48,15 @@ def cipolla(a, p):
     return res.re
 
 
-def int_to_bytes(n: int)->bytes:
+def int_to_bytes(n: int) -> bytes:
     import math
 
-    return n.to_bytes(math.ceil(n.bit_length()/8), "little")
+    return n.to_bytes(math.ceil(n.bit_length() / 8), "little")
 
-def bytes_to_int(s: bytes)->int:
+
+def bytes_to_int(s: bytes) -> int:
     return int.from_bytes(s, "little")
+
 
 def extended_gcd(a, b):
     if a == 0:
@@ -63,17 +66,17 @@ def extended_gcd(a, b):
     y = x1
     return gcd, x, y
 
+
 def find_primitive_root(n):
     if n == 1:
         return 1
     if not isprime(n):
         raise ValueError(f"{n} 不是素数，因此没有原根。")
 
-
     factors = primefactors(n - 1)
 
     for g in range(2, n):
-        if all(pow(g,  (n-1)//factor, n) != 1 for factor in factors):
+        if all(pow(g, (n - 1) // factor, n) != 1 for factor in factors):
             return g
     return None
 
@@ -108,7 +111,8 @@ def miller_rabin_prime_test(n, k=5):
 
     return True
 
-def generate_prime(n)->int:
+
+def generate_prime(n) -> int:
     p = None
     while 1:
         if miller_rabin_prime_test(n):
@@ -116,3 +120,36 @@ def generate_prime(n)->int:
             break
         n -= 1
     return p
+
+
+def fast_convolution(a, b):
+    # 计算两个向量长度之和减一
+    n = len(a) + len(b) - 1
+
+    # 计算FFT，零填充到n长度
+    A = np.fft.fft(a, n)
+    B = np.fft.fft(b, n)
+
+    # 频域逐元素相乘
+    C = A * B
+
+    # 逆FFT转换回时域
+    result = np.fft.ifft(C)
+
+    # 返回结果取实数部分
+    return np.real(result)
+
+
+def convolution_via_matrix(a, b):
+    n = len(a)
+    m = len(b)
+
+    # 构建 Toeplitz 矩阵
+    conv_matrix = np.zeros((n + m - 1, m))
+    for i in range(n):
+        conv_matrix[i : i + m, i] = b
+
+    # 矩阵乘法
+    result = np.dot(conv_matrix, a)
+
+    return result

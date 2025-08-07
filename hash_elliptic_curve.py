@@ -1,15 +1,15 @@
 from common import bytes_to_int
-from curves import Ed25519
 from elliptic_curve import Point
+from standard_curves import StandardCurve, get_curve, list_curves
 
 """
 https://andrea.corbellini.name/2023/01/02/ec-encryption/
 """
 
 
-def message_to_point(message: bytes) -> Point:
+def message_to_point(message: bytes, curve: StandardCurve) -> Point:
     # Number of bytes to represent a coordinate of a point
-    coordinate_size = Ed25519.p.bit_length() // 8
+    coordinate_size = curve.p.bit_length() // 8
     # Minimum number of bytes for the padding. We need at least 1 byte so that
     # we can try different values and find a valid point. We also add an extra
     # byte as a delimiter between the message and the padding (see below)
@@ -34,7 +34,7 @@ def message_to_point(message: bytes) -> Point:
         # valid x-coordinate
         x = bytes_to_int(padded_message)
         # Calculate the corresponding y-coordinate (if it exists)
-        y = Ed25519.y_recover(x)
+        y = curve.curve.y_recover(x)
         if y is None:
             # x was not a valid coordinate; increment the padding and try again
             padded_message[-1] += 1
@@ -43,9 +43,9 @@ def message_to_point(message: bytes) -> Point:
             return y
 
 
-def point_to_message(point: Point) -> bytes:
+def point_to_message(point: Point, curve: StandardCurve) -> bytes:
     # Number of bytes to represent a coordinate of a point
-    coordinate_size = Ed25519.p.bit_length() // 8
+    coordinate_size = curve.p.bit_length() // 8
     # Convert the x-coordinate of the point to a byte string
     padded_message = point.x.to_bytes(coordinate_size, "little")
     # Find the padding delimiter
@@ -57,8 +57,10 @@ def point_to_message(point: Point) -> bytes:
 
 if __name__ == "__main__":
     message = b"Hello, world ni haoa "
-    print(f"message: {message}")
-    p = message_to_point(message)
-    print(f"point: {p}")
-    m1 = point_to_message(p)
-    print(f"m1: {m1}")
+
+    for curve in list_curves():
+        print(f"message: {message}; curve:{curve}")
+        p = message_to_point(message, curve)
+        print(f"point: {p}")
+        m1 = point_to_message(p, curve)
+        print(f"m1: {m1}")

@@ -17,8 +17,7 @@
 - RFC 5639: ECC Brainpool Standard Curves & Curve Generation
 """
 
-from typing import Dict, Any, Optional, Tuple, Union
-import sympy
+from typing import Dict, Any
 from elliptic_curve import EllipticCurve, Point
 
 
@@ -227,11 +226,14 @@ def list_curves() -> None:
         'secp256k1', 'brainpoolP256r1', 'brainpoolP384r1'
     }
 
+    o = []
     for name in sorted(main_curves):
         curve = CURVES[name]
+
         bits = curve.p.bit_length()
         print(f"- {name}: {bits}位曲线")
-
+        o.append(curve)
+    return o
 
 def demo_standard_curves() -> None:
     """演示标准椭圆曲线的使用"""

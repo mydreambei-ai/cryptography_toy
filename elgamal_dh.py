@@ -1,13 +1,12 @@
 import random
 
 from common import (
-    miller_rabin_prime_test,
+    bytes_to_int,
     find_primitive_root,
     int_to_bytes,
-    bytes_to_int,
+    miller_rabin_prime_test,
 )
 from galois import GF, GFItem
-
 
 """
 sk, (g, p, y=g^sk)
@@ -31,6 +30,7 @@ decrypt:
 m = b/a^sk = b/(g^k)^sk = (g^sk)^k * m / (g^k)^sk = m
 
 """
+
 
 def generate_keys(n):
     p = None

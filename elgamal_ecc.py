@@ -1,6 +1,7 @@
-from hash_elliptic_curve import point_to_message, message_to_point
-from curves import Ed25519_G, Ed25519, point_compress, point_decompress
 import random
+
+from curves import Ed25519, Ed25519_G, point_compress, point_decompress
+from hash_elliptic_curve import message_to_point, point_to_message
 
 
 def generate_keys():

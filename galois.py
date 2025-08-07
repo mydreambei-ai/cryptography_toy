@@ -1,4 +1,4 @@
-from fractions import Fraction
+
 
 class GF:
     def __init__(self, p):
@@ -30,6 +30,7 @@ class GF:
     def __call__(self, item):
         return GFItem(item, self)
 
+
 class GFItem:
     def __init__(self, item, parent: GF):
         self.item = item % parent.p
@@ -58,7 +59,7 @@ class GFItem:
 
     def __truediv__(self, other):
         if other.item == 0:
-             raise ZeroDivisionError(f"inverse mod (0, {self.parent.p}) not exist")
+            raise ZeroDivisionError(f"inverse mod (0, {self.parent.p}) not exist")
         return self * (~other)
 
     def __invert__(self):
@@ -72,9 +73,10 @@ class GFItem:
         item = pow(self.item, v, self.parent.p)
         return GFItem(item, self.parent)
 
+
 if __name__ == "__main__":
     F = GF(17)
     a = F(7)
     b = F(8)
-    print(f"{a} + {b} = {a+b}")
-    print(f"{a} * {b} = {a*b}")
+    print(f"{a} + {b} = {a + b}")
+    print(f"{a} * {b} = {a * b}")

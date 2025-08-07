@@ -1,21 +1,21 @@
-
-from common import generate_prime, find_primitive_root
 import random
+
+from common import find_primitive_root, generate_prime
 from elliptic_curve import EllipticCurve
 
 """
 a b two party
 """
 
-def native_dh_exchange(p, g):
-    a = random.randint(2, p-1)
 
-    b = random.randint(2, p-1)
+def native_dh_exchange(p, g):
+    a = random.randint(2, p - 1)
+
+    b = random.randint(2, p - 1)
 
     pa = pow(g, a, p)
 
     pb = pow(g, b, p)
-
 
     print(f"pa: {pa}")
     print(f"pb: {pb}")
@@ -24,7 +24,8 @@ def native_dh_exchange(p, g):
     pba = pow(pb, a, p)
     print(f"pab: {pab}")
     print(f"pba: {pba}")
-    print(f"pab == pba", pab==pba)
+    print("pab == pba", pab == pba)
+
 
 def elliptic_curve_dh_exchange(E: EllipticCurve, g):
     a = random.randint(2, E.order)
@@ -40,7 +41,7 @@ def elliptic_curve_dh_exchange(E: EllipticCurve, g):
 
     print("gab", gab)
     print("gba", gba)
-    print("gab == gba", gab==gba)
+    print("gab == gba", gab == gba)
 
 
 if __name__ == "__main__":
@@ -48,6 +49,6 @@ if __name__ == "__main__":
     g = find_primitive_root(p)
     native_dh_exchange(p, g)
 
-    E = EllipticCurve(2,3, p=431, order=440)
+    E = EllipticCurve(2, 3, p=431, order=440)
     g = E(142, 154)
     elliptic_curve_dh_exchange(E, g)

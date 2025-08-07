@@ -1,9 +1,7 @@
+import math
 
 import numpy as np
-import math
 from common import extended_gcd
-
-
 
 PADDING_KEY = "\x00"
 alphabet = PADDING_KEY + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -12,6 +10,7 @@ N = len(alphabet)
 
 char_to_int = {char: idx for idx, char in enumerate(alphabet)}
 int_to_char = {idx: char for idx, char in enumerate(alphabet)}
+
 
 def inverse_matrix_2x2(A, p):
     """求 2x2 矩阵在有限域 Z/pZ 上的逆矩阵"""
@@ -24,18 +23,21 @@ def inverse_matrix_2x2(A, p):
 
     det_inv = extended_gcd(det, p)[1]
 
-    inv_A = [[(d * det_inv) % p, (-b * det_inv) % p],
-             [(-c * det_inv) % p, (a * det_inv) % p]]
+    inv_A = [
+        [(d * det_inv) % p, (-b * det_inv) % p],
+        [(-c * det_inv) % p, (a * det_inv) % p],
+    ]
 
     return np.array(inv_A)
 
 
 def det(A):
-    return (A[0][0] * A[1][1] - A[0][1] * A[1][0])  % N
+    return (A[0][0] * A[1][1] - A[0][1] * A[1][0]) % N
+
 
 def generate_key():
     while 1:
-        key = np.random.randint(1, N, (2,2))
+        key = np.random.randint(1, N, (2, 2))
         det_key = det(key)
         if math.gcd(det_key, N) != 1:
             continue
@@ -54,9 +56,10 @@ def text_to_matrix(text, block_size):
     matrix = np.array(int_values).reshape(-1, block_size)
     return matrix
 
+
 def matrix_to_text(matrix):
     """将矩阵转换为文本"""
-    text = ''.join(int_to_char[value] for value in matrix.flatten())
+    text = "".join(int_to_char[value] for value in matrix.flatten())
     return text
 
 
@@ -68,6 +71,7 @@ def encrypt(plain_text, key_matrix):
     cipher_text = matrix_to_text(cipher_matrix)
     return cipher_text
 
+
 def decrypt(cipher_text, key_matrix):
     block_size = key_matrix.shape[0]
     cipher_matrix = text_to_matrix(cipher_text, block_size)
@@ -76,6 +80,7 @@ def decrypt(cipher_text, key_matrix):
     plain_matrix = np.dot(cipher_matrix, inv_key_matrix) % N
     plain_text = matrix_to_text(plain_matrix)
     return plain_text
+
 
 if __name__ == "__main__":
     key = generate_key()

@@ -1,8 +1,7 @@
-import numpy as np
-from math import gcd
-from sympy import isprime, primefactors
-
 import random
+
+import numpy as np
+from sympy import Integer, Mod, Poly, div, isprime, primefactors, symbols
 
 
 def legendre_symbol(a, p):
@@ -170,3 +169,45 @@ def fast_circular_convolution(a, b):
 
     # 返回结果取实数部分
     return np.real(result)
+
+
+def polynomial_inverse_mod(f, mod_poly, m):
+    """
+    使用扩展欧几里得算法在模m的多项式环中计算多项式的逆元。
+
+    参数:
+    f: 多项式f的系数列表（从低次到高次）
+    mod_poly: 模多项式的系数列表（从低次到高次）
+    m: 模数
+
+    返回:
+    逆元多项式的系数列表
+    """
+    x = symbols("x")
+
+    # 定义多项式
+    f = Poly(f, x, domain="ZZ")
+    mod_poly = Poly(mod_poly, x, domain="ZZ")
+
+    # 扩展欧几里得算法
+    def extended_gcd(a, b):
+        if b == 0:
+            return (a, Poly(1, x), Poly(0, x))  # GCD, u, v
+        gcd_poly, u1, v1 = extended_gcd(b, Mod(a, b))
+        u = v1
+        v = u1 - div(a, b)[0] * v1
+        return (gcd_poly, u, v)
+
+    # 计算扩展欧几里得算法
+    gcd_poly, u, _ = extended_gcd(f, mod_poly)
+
+    # 检查是否可逆
+    if not gcd_poly.is_one:
+        raise ValueError("多项式在给定的模下没有逆元。")
+
+    # 归一化结果
+    inverse_poly = Mod(u, mod_poly)
+
+    # 模数运算，确保系数在 [0, m-1] 范围内
+    inverse_coeffs = [Integer(coef % m) for coef in inverse_poly.all_coeffs()]
+    return inverse_coeffs

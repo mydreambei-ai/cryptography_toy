@@ -1,9 +1,11 @@
-from curves import Ed25519_G, Ed25519
+from common import bytes_to_int
+from curves import Ed25519
 from elliptic_curve import Point
-from common import int_to_bytes, bytes_to_int
+
 """
 https://andrea.corbellini.name/2023/01/02/ec-encryption/
 """
+
 
 def message_to_point(message: bytes) -> Point:
     # Number of bytes to represent a coordinate of a point
@@ -16,16 +18,16 @@ def message_to_point(message: bytes) -> Point:
     max_message_size = coordinate_size - min_padding_size
 
     if len(message) > max_message_size:
-        raise ValueError('Message too long')
+        raise ValueError("Message too long")
 
     # Add a padding long enough to ensure that the resulting padded message has
     # the same size as a point coordinate. Initially the padding is all 0
     padding_size = coordinate_size - len(message)
-    padded_message = bytearray(message) + b'\0' * padding_size
+    padded_message = bytearray(message) + b"\0" * padding_size
 
     # Put a delimiter between the message and the padding, so that we can
     # properly remove the padding at decrypt time
-    padded_message[len(message)] = 0xff
+    padded_message[len(message)] = 0xFF
 
     while True:
         # Convert the padded message to an integer, which may or may not be a
@@ -45,12 +47,13 @@ def point_to_message(point: Point) -> bytes:
     # Number of bytes to represent a coordinate of a point
     coordinate_size = Ed25519.p.bit_length() // 8
     # Convert the x-coordinate of the point to a byte string
-    padded_message = point.x.to_bytes(coordinate_size, 'little')
+    padded_message = point.x.to_bytes(coordinate_size, "little")
     # Find the padding delimiter
-    message_size = padded_message.rfind(0xff)
+    message_size = padded_message.rfind(0xFF)
     # Remove the padding and return the resulting message
     message = padded_message[:message_size]
     return message
+
 
 if __name__ == "__main__":
     message = b"Hello, world ni haoa "

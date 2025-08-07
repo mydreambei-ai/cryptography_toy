@@ -1,4 +1,4 @@
-from common import miller_rabin_prime_test, int_to_bytes, bytes_to_int, extended_gcd
+from common import bytes_to_int, extended_gcd, int_to_bytes, miller_rabin_prime_test
 
 """
 a^p == a mod p
@@ -15,7 +15,9 @@ a**(ed) = a**(1 + k*(phi(p*q))) = a * a**(phi(p*q))*k = a* 1
 note: m must be {n} space
 
 """
-def generate_prime(n)->int:
+
+
+def generate_prime(n) -> int:
     p = None
     while 1:
         if miller_rabin_prime_test(n):
@@ -24,21 +26,23 @@ def generate_prime(n)->int:
         n -= 1
     return p
 
+
 def generate_keys(n):
     p = generate_prime(n)
     q = generate_prime(n**2)
     print(f"p: {p}")
     print(f"q: {q}")
     n = p * q
-    phi = (p-1) * (q-1)
+    phi = (p - 1) * (q - 1)
 
     e = 65537
     d = extended_gcd(e, phi)[1]
     if d < 0:
         d = phi + d
-    print(f"n:", n, n.bit_length())
+    print("n:", n, n.bit_length())
 
     return (e, n), (d, n)
+
 
 def encrypt(m, pk):
     d, n = pk

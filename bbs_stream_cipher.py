@@ -13,9 +13,9 @@ BBS是一个密码学安全的伪随机数生成器，基于二次剩余理论�
 版本: 1.0
 """
 
-import secrets
 import math
-from typing import Tuple, List, Optional, Dict, Any
+import secrets
+from typing import Any, Dict, List, Optional, Tuple
 
 
 def is_prime(p: int, num_trials: int = 5) -> bool:

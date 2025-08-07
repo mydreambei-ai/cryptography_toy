@@ -12,8 +12,8 @@ Galois 有限域 (GF(p)) 的实现
     c = a + b   # 执行域中的算术运算
 """
 
-from typing import Union, Tuple, List, Any
 import random
+from typing import Any, List, Tuple, Union
 
 
 class GF:

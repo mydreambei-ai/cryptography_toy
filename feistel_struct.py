@@ -18,7 +18,7 @@ Feistel 结构是许多对称密码算法的基础，如 DES、Blowfish 等。
 
 import hashlib
 import secrets
-from typing import Callable, List, Tuple, Optional, Union
+from typing import Callable, List, Optional, Tuple, Union
 
 
 class FeistelNetwork:

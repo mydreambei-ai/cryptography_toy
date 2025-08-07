@@ -11,9 +11,9 @@
 这些函数被其他密码学实现所依赖。
 """
 
-import random
 import math
-from typing import Optional, Tuple, List, Union, Any
+import random
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 from sympy import Integer, Mod, Poly, div, isprime, primefactors, symbols

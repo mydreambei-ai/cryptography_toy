@@ -17,7 +17,8 @@
 - RFC 5639: ECC Brainpool Standard Curves & Curve Generation
 """
 
-from typing import Dict, Any
+from typing import Any, Dict
+
 from elliptic_curve import EllipticCurve, Point
 
 

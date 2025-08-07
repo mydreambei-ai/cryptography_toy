@@ -1,9 +1,8 @@
 import secrets
-from typing import Tuple, Optional, Dict
+from typing import Dict, Optional, Tuple
 
 from hash_elliptic_curve import message_to_point, point_to_message
-from standard_curves import StandardCurve, get_curve, CURVES
-
+from standard_curves import CURVES, get_curve
 
 """
 ElGamal ECC Cryptosystem Implementation

@@ -14,9 +14,9 @@
 - SEC 1: Elliptic Curve Cryptography (www.secg.org)
 """
 
-from fractions import Fraction
-from typing import Union, Optional, Tuple, Any
 import secrets
+from fractions import Fraction
+from typing import Any, Optional, Tuple, Union
 
 from common import cipolla
 from galois import GF, GFItem

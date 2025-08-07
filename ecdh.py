@@ -7,13 +7,12 @@ ECDH (Elliptic Curve Diffie-Hellman) 是基于椭圆曲线密码学的密钥交�
 本示例演示了如何使用标准椭圆曲线进行 ECDH 密钥交换。
 """
 
-import os
 import hashlib
 import secrets
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from elliptic_curve import Point
-from standard_curves import get_curve, StandardCurve
+from standard_curves import StandardCurve, get_curve
 
 
 class ECDHExchange:
@@ -95,7 +94,7 @@ class ECDHExchange:
             ValueError: 如果私钥无效
         """
         if not 1 <= private_key < self.curve_info.n:
-            raise ValueError(f"私钥必须在范围 [1, n-1] 内")
+            raise ValueError("私钥必须在范围 [1, n-1] 内")
 
         self.private_key = private_key
         self.public_key = self.curve.mul_point(self.G, private_key)

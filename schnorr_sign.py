@@ -13,7 +13,7 @@ Schnorr 签名是一种数字签名算法，基于离散对数问题的困难性
 
 import hashlib
 import secrets
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 
 class SchnorrSignature:

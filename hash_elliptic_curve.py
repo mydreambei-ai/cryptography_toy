@@ -1,6 +1,6 @@
 from common import bytes_to_int
 from elliptic_curve import Point
-from standard_curves import StandardCurve, get_curve, list_curves
+from standard_curves import StandardCurve, list_curves
 
 """
 https://andrea.corbellini.name/2023/01/02/ec-encryption/

@@ -1,9 +1,10 @@
 import hashlib
 import random
 
-from common import bytes_to_int, int_to_bytes
 from curves import Ed25519
 from curves import Ed25519_G as G
+
+from common import bytes_to_int, int_to_bytes
 from elliptic_curve import Point
 
 """

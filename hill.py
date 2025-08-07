@@ -1,6 +1,7 @@
 import math
 
 import numpy as np
+
 from common import extended_gcd
 
 PADDING_KEY = "\x00"

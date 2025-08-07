@@ -1,5 +1,5 @@
-import struct
 import os
+import struct
 from typing import Optional, Tuple
 
 # --- ChaCha20 Stream Cipher 实现 ---
